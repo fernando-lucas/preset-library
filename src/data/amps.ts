@@ -3,7 +3,6 @@ import type { Amp } from '../types/amp'
 import twoRockImg from '../assets/amps/no_image.jpg'
 import evh5150Img from '../assets/amps/no_image.jpg'
 import marshallJCM800Img from '../assets/amps/no_image.jpg'
-import testeImg from '../assets/amps/no_image.jpg'
 import noImg from '../assets/amps/no_image.jpg'
 
 export const amps: Amp[] = [
@@ -23,23 +22,23 @@ export const amps: Amp[] = [
   },
   {
     id: '3',
-    name: 'Marshall JCM 800',
+    name: 'JCM 800',
     brand: 'Marshall',
     image: marshallJCM800Img,
     description: 'High gain moderno para metal',
   },
   {
     id: '4',
-    name: 'Teste',
-    brand: 'Marshall',
-    image: testeImg,
-    description: 'High gain moderno para metal',
+    name: 'Deluxe Reverb 65',
+    brand: 'Fender',
+    image: noImg,
+    description: 'Amp Classico limpo e vintage',
   },
   {
     id: '5',
-    name: 'Teste 2',
-    brand: 'Marshall',
+    name: 'AC30',
+    brand: 'Vox',
     image: noImg,
-    description: 'High gain moderno para metal',
+    description: 'Amp Classico limpo e vintage',
   },
 ]

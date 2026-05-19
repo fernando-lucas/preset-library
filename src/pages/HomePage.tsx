@@ -31,7 +31,7 @@ export function HomePage() {
         Biblioteca de presets de guitarra
       </p>
     
-    <div className="mt-6">
+    <div className="mt-6 flex gap-4">
         <Link
             to="/new-preset"
             className="
@@ -51,7 +51,26 @@ export function HomePage() {
         </Link>
     </div>
 
-    <div className="mt-6">
+    <Link
+      to="/amps"
+      className="
+        inline-flex
+        items-center
+        rounded-xl
+        border
+        border-zinc-700
+        px-5
+        py-3
+        font-medium
+        text-white
+        transition
+        hover:border-zinc-500
+      "
+      >
+      Biblioteca de Amps
+    </Link>
+
+    <div className="mt-6 flex gap-4">
         <input
             type="text"
             placeholder="Buscar preset..."
