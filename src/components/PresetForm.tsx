@@ -11,6 +11,7 @@ interface Props {
     name: string
     ampId: string
     description: string
+    tags: string[]
   }) => void
 }
 
@@ -24,6 +25,10 @@ export function PresetForm({
 
   const [description, setDescription] = useState(
     initialData?.description || ''
+  )
+
+  const [tags, setTags] = useState(
+    initialData?.tags.join(', ') || ''
   )
 
   const [selectedAmp, setSelectedAmp] = useState(
@@ -41,6 +46,7 @@ export function PresetForm({
       name,
       ampId: selectedAmp,
       description,
+      tags: tags.split(',').map(tag => tag.trim()).filter(Boolean),
     })
   }
 
@@ -127,6 +133,34 @@ export function PresetForm({
             focus:border-zinc-500
           "
         />
+        <div>
+          <label className="mb-2 block text-sm text-zinc-400">
+            Tags
+          </label>
+
+          <input
+            type="text"
+            value={tags}
+            onChange={e => setTags(e.target.value)}
+            placeholder="fusion, lead, ambient"
+            className="
+              w-full
+              rounded-xl
+              border
+              border-zinc-700
+              bg-zinc-800
+              px-4
+              py-3
+              outline-none
+              focus:border-zinc-500
+            "
+          />
+
+          <p className="mt-2 text-sm text-zinc-500">
+            Separe as tags por vírgula
+          </p>
+        </div>
+
       </div>
 
       <button

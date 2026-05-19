@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom'
 export function HomePage() {
   const [search, setSearch] = useState('')
   const [presets, setPresets] = useState<Preset[]>([])
+  const [selectedTag, setSelectedTag] = useState('')
+
   useEffect(() => {
     async function loadPresets() {
       const data = await getPresets()
@@ -17,9 +19,27 @@ export function HomePage() {
 
     loadPresets()
   }, [])
-  const filteredPresets = presets.filter(preset =>
-    preset.name.toLowerCase().includes(search.toLowerCase())
+
+  const filteredPresets = presets.filter(preset => {
+    const matchesSearch =
+      preset.name
+        .toLowerCase()
+        .includes(search.toLowerCase())
+
+    const matchesTag =
+      !selectedTag ||
+      preset.tags.includes(selectedTag)
+
+    return matchesSearch && matchesTag
+  })
+
+  const availableTags = Array.from(
+    new Set(
+      presets.flatMap(preset => preset.tags)
+    )
   )
+
+
   
   return (
     <div className="min-h-screen bg-zinc-900 text-white p-6">
@@ -90,6 +110,49 @@ export function HomePage() {
             focus:border-zinc-500
             "
         />
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        <button
+          onClick={() => setSelectedTag('')}
+          className={`
+            rounded-full
+            px-4
+            py-2
+            text-sm
+            transition
+
+            ${
+              selectedTag === ''
+                ? 'bg-white text-black'
+                : 'bg-zinc-800 text-zinc-300'
+            }
+          `}
+        >
+          Todas
+        </button>
+
+        {availableTags.map(tag => (
+          <button
+            key={tag}
+            onClick={() => setSelectedTag(tag)}
+            className={`
+              rounded-full
+              px-4
+              py-2
+              text-sm
+              transition
+
+              ${
+                selectedTag === tag
+                  ? 'bg-white text-black'
+                  : 'bg-zinc-800 text-zinc-300'
+              }
+            `}
+          >
+            #{tag}
+          </button>
+        ))}
       </div>
 
       <div className="mt-8 grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

@@ -50,6 +50,7 @@ export function EditPresetPage() {
     name: string
     ampId: string
     description: string
+    tags: string[]
   }) {
     if (!preset) return
     await updatePreset({
@@ -57,6 +58,7 @@ export function EditPresetPage() {
       name: data.name,
       ampId: data.ampId,
       description: data.description,
+      tags: data.tags,
     })
 
     navigate(`/preset/${preset.id}`)

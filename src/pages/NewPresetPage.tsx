@@ -11,13 +11,14 @@ export function NewPresetPage() {
     name: string
     ampId: string
     description: string
+    tags: string[]
   }) {
     await createPreset({
       id: crypto.randomUUID(),
       name: data.name,
       ampId: data.ampId,
       description: data.description,
-      tags: [],
+      tags: data.tags,
     })
 
     navigate('/')
