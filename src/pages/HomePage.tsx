@@ -1,9 +1,11 @@
-import { PresetCard } from '../components/PresetCard'
-import { getPresets } from '../services/presetService'
 import { useEffect, useState } from 'react'
-import type { Preset } from '../types/preset'
 import { Link } from 'react-router-dom'
 
+import { PresetCard } from '../components/PresetCard'
+
+import { getPresets } from '../services/presetService'
+
+import type { Preset } from '../types/preset'
 
 export function HomePage() {
   const [search, setSearch] = useState('')
@@ -20,11 +22,30 @@ export function HomePage() {
     loadPresets()
   }, [])
 
+  const availableTags = Array.from(
+    new Set(
+      presets.flatMap(preset => preset.tags)
+    )
+  )
+
   const filteredPresets = presets.filter(preset => {
+    const normalizedSearch =
+      search.toLowerCase()
+
     const matchesSearch =
       preset.name
         .toLowerCase()
-        .includes(search.toLowerCase())
+        .includes(normalizedSearch) ||
+
+      preset.description
+        .toLowerCase()
+        .includes(normalizedSearch) ||
+
+      preset.tags.some(tag =>
+        tag
+          .toLowerCase()
+          .includes(normalizedSearch)
+      )
 
     const matchesTag =
       !selectedTag ||
@@ -33,135 +54,190 @@ export function HomePage() {
     return matchesSearch && matchesTag
   })
 
-  const availableTags = Array.from(
-    new Set(
-      presets.flatMap(preset => preset.tags)
-    )
-  )
-
-
-  
   return (
-    <div className="min-h-screen bg-zinc-900 text-white p-6">
-      <h1 className="text-4xl font-bold">
-        PresetLibrary
-      </h1>
+    <div className="min-h-screen bg-zinc-950 text-white">
+      <div className="mx-auto max-w-7xl px-5 py-6">
 
-      <p className="mt-2 text-zinc-400">
-        Biblioteca de presets de guitarra
-      </p>
-    
-    <div className="mt-6 flex gap-4">
-        <Link
+        {/* HEADER */}
+
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">
+              PresetLibrary
+            </h1>
+
+            <p className="mt-1 text-sm text-zinc-500">
+              Guitar preset collection
+            </p>
+          </div>
+
+          <Link
             to="/new-preset"
             className="
-            inline-flex
-            items-center
-            rounded-xl
-            bg-white
-            px-5
-            py-3
-            font-medium
-            text-black
-            transition
-            hover:opacity-80
+              flex
+              h-10
+              w-10
+              items-center
+              justify-center
+              rounded-full
+              bg-white
+              text-4xl
+              font-light
+              text-black
+              shadow-lg
+              transition-all
+              duration-200
+              hover:scale-105
             "
-            >
-            + Novo Preset
-        </Link>
-    </div>
+          >
+            <span className="-translate-y-[2px]"> + </span>
+          
+          </Link>
+        </div>
 
-    <Link
-      to="/amps"
-      className="
-        inline-flex
-        items-center
-        rounded-xl
-        border
-        border-zinc-700
-        px-5
-        py-3
-        font-medium
-        text-white
-        transition
-        hover:border-zinc-500
-      "
-      >
-      Biblioteca de Amps
-    </Link>
+        {/* SEARCH */}
 
-    <div className="mt-6 flex gap-4">
-        <input
+        <div className="mt-8">
+          <input
             type="text"
-            placeholder="Buscar preset..."
+            placeholder="Search presets..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="
-            w-full
-            rounded-xl
-            border
-            border-zinc-700
-            bg-zinc-800
-            px-4
-            py-3
-            text-white
-            outline-none
-            transition
-            focus:border-zinc-500
+              w-full
+              rounded-3xl
+              border
+              border-zinc-800
+              bg-zinc-900
+              px-6
+              py-4
+              text-base
+              text-white
+              outline-none
+              transition-all
+              focus:border-zinc-600
             "
-        />
-      </div>
+          />
+        </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button
-          onClick={() => setSelectedTag('')}
-          className={`
-            rounded-full
-            px-4
-            py-2
-            text-sm
-            transition
+        {/* TAGS */}
 
-            ${
-              selectedTag === ''
-                ? 'bg-white text-black'
-                : 'bg-zinc-800 text-zinc-300'
-            }
-          `}
+        <div
+          className="
+            mt-6
+            flex
+            gap-3
+            overflow-x-auto
+            pb-2
+          "
         >
-          Todas
-        </button>
-
-        {availableTags.map(tag => (
           <button
-            key={tag}
-            onClick={() => setSelectedTag(tag)}
+            onClick={() => setSelectedTag('')}
             className={`
+              whitespace-nowrap
               rounded-full
-              px-4
-              py-2
+              border
+              px-5
+              py-2.5
               text-sm
-              transition
+              font-medium
+              transition-all
 
               ${
-                selectedTag === tag
-                  ? 'bg-white text-black'
-                  : 'bg-zinc-800 text-zinc-300'
+                selectedTag === ''
+                  ? `
+                    border-white
+                    bg-white
+                    text-black
+                  `
+                  : `
+                    border-zinc-800
+                    bg-zinc-900
+                    text-zinc-300
+                  `
               }
             `}
           >
-            #{tag}
+            All
           </button>
-        ))}
-      </div>
 
-      <div className="mt-8 grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        {filteredPresets.map(preset => (
-          <PresetCard
-            key={preset.id}
-            preset={preset}
-          />
-        ))}
+          {availableTags.map(tag => (
+            <button
+              key={tag}
+              onClick={() => setSelectedTag(tag)}
+              className={`
+                whitespace-nowrap
+                rounded-full
+                border
+                px-5
+                py-2.5
+                text-sm
+                font-medium
+                transition-all
+
+                ${
+                  selectedTag === tag
+                    ? `
+                      border-white
+                      bg-white
+                      text-black
+                    `
+                    : `
+                      border-zinc-800
+                      bg-zinc-900
+                      text-zinc-300
+                    `
+                }
+              `}
+            >
+              #{tag}
+            </button>
+          ))}
+        </div>
+
+        {/* QUICK ACTIONS */}
+
+        <div className="mt-8 flex gap-3">
+          <Link
+            to="/amps"
+            className="
+              rounded-2xl
+              border
+              border-zinc-800
+              bg-zinc-900
+              px-5
+              py-3
+              text-sm
+              font-medium
+              text-zinc-200
+              transition-all
+              hover:border-zinc-700
+            "
+          >
+            Browse Amps
+          </Link>
+        </div>
+
+        {/* PRESETS */}
+
+        <div
+          className="
+            mt-10
+            grid
+            grid-cols-1
+            gap-8
+            md:grid-cols-2
+            xl:grid-cols-3
+          "
+        >
+          {filteredPresets.map(preset => (
+            <PresetCard
+              key={preset.id}
+              preset={preset}
+            />
+          ))}
+        </div>
+
       </div>
     </div>
   )
