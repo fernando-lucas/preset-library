@@ -19,6 +19,7 @@ export function NewPresetPage() {
       ampId: data.ampId,
       description: data.description,
       tags: data.tags,
+      order: Date.now(),
     })
 
     navigate('/')

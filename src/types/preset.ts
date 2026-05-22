@@ -4,4 +4,5 @@ export interface Preset {
   ampId: string
   description: string
   tags: string[]
+  order: number
 }

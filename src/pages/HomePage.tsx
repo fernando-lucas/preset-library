@@ -28,31 +28,34 @@ export function HomePage() {
     )
   )
 
-  const filteredPresets = presets.filter(preset => {
-    const normalizedSearch =
-      search.toLowerCase()
+  const filteredPresets = presets
+    .filter(preset => {
+      const normalizedSearch =
+        search.toLowerCase()
 
-    const matchesSearch =
-      preset.name
-        .toLowerCase()
-        .includes(normalizedSearch) ||
-
-      preset.description
-        .toLowerCase()
-        .includes(normalizedSearch) ||
-
-      preset.tags.some(tag =>
-        tag
+      const matchesSearch =
+        preset.name
           .toLowerCase()
-          .includes(normalizedSearch)
-      )
+          .includes(normalizedSearch) ||
 
-    const matchesTag =
-      !selectedTag ||
-      preset.tags.includes(selectedTag)
+        preset.description
+          .toLowerCase()
+          .includes(normalizedSearch) ||
 
-    return matchesSearch && matchesTag
-  })
+        preset.tags.some(tag =>
+          tag
+            .toLowerCase()
+            .includes(normalizedSearch)
+        )
+
+      const matchesTag =
+        !selectedTag ||
+        preset.tags.includes(selectedTag)
+
+      return matchesSearch && matchesTag
+    })
+
+    .sort((a, b) => a.order - b.order)
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
@@ -230,10 +233,17 @@ export function HomePage() {
             xl:grid-cols-3
           "
         >
-          {filteredPresets.map(preset => (
+          {filteredPresets.map((preset, index) => (
             <PresetCard
               key={preset.id}
               preset={preset}
+              index={index}
+              presets={filteredPresets}
+              onReorder={async () => {
+                const data = await getPresets()
+
+                setPresets(data)
+              }}
             />
           ))}
         </div>
