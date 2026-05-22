@@ -63,7 +63,7 @@ export function AmpDetailsPage() {
       <img
         src={amp.image}
         alt={amp.name}
-        className="h-72 w-full object-cover"
+        className="h-40 w-full object-cover"
       />
 
       <div className="p-6">

@@ -87,7 +87,7 @@ return (
     <img
       src={amp.image}
       alt={amp.name}
-      className="h-72 w-full object-cover"
+      className="h-40 w-full object-cover"
     />
 
     <div className="p-6">
@@ -132,7 +132,7 @@ return (
           items-center
           rounded-xl
           bg-white
-          px-5
+          px-5  
           py-3
           font-medium
           text-black
@@ -142,26 +142,25 @@ return (
       >
         Editar Preset
       </Link>
+
+      <button
+        onClick={handleDeletePreset}
+        className="
+          rounded-xl
+          border
+          border-red-500
+          px-5
+          py-3
+          font-medium
+          text-red-400
+          transition
+          hover:bg-red-500/10
+        "
+      >
+        Deletar Preset
+      </button>
+
     </div>
-
-  <button
-    onClick={handleDeletePreset}
-    className="
-      rounded-xl
-      border
-      border-red-500
-      px-5
-      py-3
-      font-medium
-      text-red-400
-      transition
-      hover:bg-red-500/10
-    "
-  >
-    Deletar Preset
-  </button>
-
-
 
     </div>
   </div>
