@@ -8,9 +8,13 @@ import type { Setlist } from '../types/setlist'
 
 import { useNavigate } from 'react-router-dom'
 
+import {deleteSetlist } from '../services/setlistService'
+
 import {
-  setActiveSetlist,
+  getActiveSetlist,
+  setActiveSetlist
 } from '../lib/activeSetlist'
+
 
 export function SetlistsPage() {
   const [setlists, setSetlists] = useState<
@@ -28,6 +32,34 @@ export function SetlistsPage() {
   }, [])
 
   const navigate = useNavigate()
+
+  async function handleDeleteSetlist(
+    id: string
+  ) {
+    const confirmed = confirm(
+      'Delete this setlist?'
+    )
+
+    if (!confirmed) return
+
+    await deleteSetlist(id)
+
+    const updated =
+      await getSetlists()
+
+    setSetlists(updated)
+
+    const active =
+      getActiveSetlist()
+
+    if (active === id && updated.length > 0) {
+      setActiveSetlist(
+        updated[0].id
+      )
+    }
+
+    navigate('/')
+  }
 
   return (
     <div className="min-h-screen bg-zinc-950 p-6 text-white">
@@ -94,8 +126,55 @@ export function SetlistsPage() {
                 <p className="mt-3 text-zinc-400">
                 {setlist.description}
                 </p>
+                
+                <div className="mt-6 flex gap-3">
+
+                <Link
+                  to={`/setlists/${setlist.id}/edit`}
+                  onClick={e => e.stopPropagation()}
+                  className="
+                    rounded-xl
+                    border
+                    border-zinc-800
+                    px-4
+                    py-2
+                    text-sm
+                    text-zinc-300
+                    transition
+                    hover:border-zinc-700
+                  "
+                >
+                  Editar
+                </Link>
+
+                <button
+                  onClick={e => {
+                    e.stopPropagation()
+
+                    handleDeleteSetlist(
+                      setlist.id
+                    )
+                  }}
+                  className="
+                    rounded-xl
+                    border
+                    border-red-500
+                    px-4
+                    py-2
+                    text-sm
+                    text-red-400
+                    transition
+                    hover:bg-red-500/10
+                  "
+                >
+                  Deletar
+                </button>
+
+              </div>
 
             </button>
+
+            
             ))}
 
         </div>

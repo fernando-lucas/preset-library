@@ -9,6 +9,7 @@ import { AmpDetailsPage } from './pages/AmpDetailsPage'
 import { SetlistsPage } from './pages/SetlistsPage'
 import { NewSetlistPage } from './pages/NewSetlistPage'
 import { BottomNavigation } from './components/BottomNavigation'
+import { EditSetlistPage } from './pages/EditSetlistPage'
 
 function App() {
   return (
@@ -47,6 +48,10 @@ function App() {
         <Route
           path="/new-setlist"
           element={<NewSetlistPage />}
+        />
+        <Route
+          path="/setlists/:id/edit"
+          element={<EditSetlistPage />}
         />
 
       </Routes>
