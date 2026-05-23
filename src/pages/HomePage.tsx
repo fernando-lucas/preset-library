@@ -7,19 +7,50 @@ import { getPresets } from '../services/presetService'
 
 import type { Preset } from '../types/preset'
 
+import { getActiveSetlist, } from '../lib/activeSetlist'
+
+import { getSetlistById, } from '../services/setlistService'
+
 export function HomePage() {
   const [search, setSearch] = useState('')
   const [presets, setPresets] = useState<Preset[]>([])
   const [selectedTag, setSelectedTag] = useState('')
+  const [activeSetlistName, setActiveSetlistName] = useState('')
 
   useEffect(() => {
-    async function loadPresets() {
-      const data = await getPresets()
+    async function loadData() {
+      const allPresets =
+        await getPresets()
 
-      setPresets(data)
+      const activeSetlistId =
+        getActiveSetlist()
+
+      const filteredPresets =
+        activeSetlistId
+          ? allPresets.filter(
+              preset =>
+                preset.setlistId ===
+                activeSetlistId
+            )
+          : allPresets
+
+      setPresets(filteredPresets)
+
+      if (activeSetlistId) {
+        const setlist =
+          await getSetlistById(
+            activeSetlistId
+          )
+
+        if (setlist) {
+          setActiveSetlistName(
+            setlist.name
+          )
+        }
+      }
     }
 
-    loadPresets()
+    loadData()
   }, [])
 
   const availableTags = Array.from(
@@ -66,7 +97,7 @@ export function HomePage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">
-              PresetLibrary
+              {activeSetlistName || 'My Presets'}
             </h1>
 
             <p className="mt-1 text-sm text-zinc-500">
@@ -196,29 +227,6 @@ export function HomePage() {
               #{tag}
             </button>
           ))}
-        </div>
-
-        {/* QUICK ACTIONS */}
-
-        <div className="mt-8 flex gap-3">
-          <Link
-            to="/amps"
-            className="
-              rounded-2xl
-              border
-              border-zinc-800
-              bg-zinc-900
-              px-5
-              py-3
-              text-sm
-              font-medium
-              text-zinc-200
-              transition-all
-              hover:border-zinc-700
-            "
-          >
-            Browse Amps
-          </Link>
         </div>
 
         {/* PRESETS */}

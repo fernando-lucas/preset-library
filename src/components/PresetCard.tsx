@@ -44,6 +44,28 @@ export function PresetCard({ preset, index, presets, onReorder }: Props) {
       to={`/preset/${preset.id}`}
       className="relative overflow-hidden rounded-2xl border border-zinc-700 bg-zinc-800 block transition hover:border-zinc-500"
     >
+      
+      <div
+        className="
+          absolute
+          left-2
+          top-2
+          z-10
+          flex
+          h-9
+          w-9
+          items-center
+          justify-center
+          rounded-full
+          bg-black/10
+          text-sm
+          font-semibold
+          text-white
+          backdrop-blur-md
+        "
+      >
+        {String(index + 1).padStart(2, '0')}
+      </div>
 
       <img
         src={amp.image}

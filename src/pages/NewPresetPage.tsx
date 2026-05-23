@@ -4,6 +4,8 @@ import { PresetForm } from '../components/PresetForm'
 
 import { createPreset } from '../services/presetService'
 
+import { getActiveSetlist } from '../lib/activeSetlist'
+
 export function NewPresetPage() {
   const navigate = useNavigate()
 
@@ -18,6 +20,7 @@ export function NewPresetPage() {
       name: data.name,
       ampId: data.ampId,
       description: data.description,
+      setlistId: getActiveSetlist() ?? 'default',
       tags: data.tags,
       order: Date.now(),
     })

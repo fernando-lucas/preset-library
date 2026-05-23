@@ -3,6 +3,7 @@ export interface Preset {
   name: string
   ampId: string
   description: string
+  setlistId: string
   tags: string[]
   order: number
 }
