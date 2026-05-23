@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 
 import { Link, useNavigate } from 'react-router-dom'
 
-import { getSetlists, deleteSetlist, createSetlist } from '../services/setlistService'
+import {
+  getSetlists,
+  deleteSetlist,
+  createSetlist,
+} from '../services/setlistService'
 
 import type { Setlist } from '../types/setlist'
 
@@ -43,8 +47,6 @@ export function SetlistsPage() {
     const updated =
       await getSetlists()
 
-    setSetlists(updated)
-
     const active =
       getActiveSetlist()
 
@@ -63,12 +65,20 @@ export function SetlistsPage() {
       setActiveSetlist(
         newSetlist.id
       )
+
+      setSetlists([newSetlist])
     }
 
     else if (active === id) {
       setActiveSetlist(
         updated[0].id
       )
+
+      setSetlists(updated)
+    }
+
+    else {
+      setSetlists(updated)
     }
 
     navigate('/')
@@ -112,14 +122,9 @@ export function SetlistsPage() {
 
         <div className="mt-10 grid gap-6">
 
-            {setlists.map(setlist => (
-            <button
+          {setlists.map(setlist => (
+            <div
                 key={setlist.id}
-                onClick={() => {
-                setActiveSetlist(setlist.id)
-
-                navigate('/')
-                }}
                 className="
                 rounded-3xl
                 border
@@ -132,6 +137,14 @@ export function SetlistsPage() {
                 "
             >
 
+              <button
+                onClick={() => {
+                  setActiveSetlist(setlist.id)
+
+                  navigate('/')
+                }}
+                className="block w-full text-left"
+              >
                 <h2 className="text-2xl font-semibold">
                 {setlist.name}
                 </h2>
@@ -139,12 +152,12 @@ export function SetlistsPage() {
                 <p className="mt-3 text-zinc-400">
                 {setlist.description}
                 </p>
+              </button>
                 
                 <div className="mt-6 flex gap-3">
 
                 <Link
                   to={`/setlists/${setlist.id}/edit`}
-                  onClick={e => e.stopPropagation()}
                   className="
                     rounded-xl
                     border
@@ -161,9 +174,7 @@ export function SetlistsPage() {
                 </Link>
 
                 <button
-                  onClick={e => {
-                    e.stopPropagation()
-
+                  onClick={() => {
                     handleDeleteSetlist(
                       setlist.id
                     )
@@ -185,7 +196,7 @@ export function SetlistsPage() {
 
               </div>
 
-            </button>
+            </div>
 
             
             ))}

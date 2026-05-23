@@ -27,5 +27,17 @@ export async function updateSetlist(
 export async function deleteSetlist(
   id: string
 ) {
-  return await db.setlists.delete(id)
+  return await db.transaction(
+    'rw',
+    db.setlists,
+    db.presets,
+    async () => {
+      await db.presets
+        .where('setlistId')
+        .equals(id)
+        .delete()
+
+      await db.setlists.delete(id)
+    }
+  )
 }

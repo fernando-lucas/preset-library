@@ -18,6 +18,12 @@ export class PresetLibraryDatabase extends Dexie {
       amps: 'id, name, brand',
       setlists: 'id, name, description'
     })
+
+    this.version(3).stores({
+      presets: 'id, name, ampId, setlistId',
+      amps: 'id, name, brand',
+      setlists: 'id, name, description'
+    })
   }
 }
 

@@ -15,7 +15,8 @@ import { getSetlistById, } from '../services/setlistService'
 export function HomePage() {
   const [search, setSearch] = useState('')
   const [presets, setPresets] = useState<Preset[]>([])
-    async function loadPresets() {
+
+  async function loadPresets() {
     const data = await getPresets()
 
     const activeSetlistId =
@@ -29,6 +30,7 @@ export function HomePage() {
 
     setPresets(filtered)
   }
+
   const [selectedTag, setSelectedTag] = useState('')
   const [activeSetlistName, setActiveSetlistName] = useState('')
 
@@ -62,7 +64,10 @@ export function HomePage() {
     )
   )
 
-  const filteredPresets = presets
+  const orderedPresets = [...presets]
+    .sort((a, b) => a.order - b.order)
+
+  const filteredPresets = orderedPresets
     .filter(preset => {
       const normalizedSearch =
         search.toLowerCase()
@@ -88,8 +93,6 @@ export function HomePage() {
 
       return matchesSearch && matchesTag
     })
-
-    .sort((a, b) => a.order - b.order)
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
@@ -248,23 +251,14 @@ export function HomePage() {
             <PresetCard
               key={preset.id}
               preset={preset}
-              index={index}
-              presets={filteredPresets}
+              displayIndex={index}
+              orderIndex={orderedPresets.findIndex(
+                item => item.id === preset.id
+              )}
+              presets={orderedPresets}
               onReorder={async () => {
-              const data = await getPresets()
-
-              const activeSetlistId =
-                getActiveSetlist()
-
-              const filtered =
-                data.filter(
-                  preset =>
-                    preset.setlistId ===
-                    activeSetlistId
-                )
-
-              setPresets(filtered)
-            }}
+                await loadPresets()
+              }}
             />
           ))}
         </div>
