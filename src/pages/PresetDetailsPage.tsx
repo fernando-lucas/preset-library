@@ -4,29 +4,41 @@ import {
   useParams,
 } from 'react-router-dom'
 
-import { amps } from '../data/amps'
-
 import { useEffect, useState } from 'react'
 import type { Preset } from '../types/preset'
+import type { Amp } from '../types/amp'
 import { getPresets } from '../services/presetService'
 import { deletePreset } from '../services/presetService'
+import { getAmpById } from '../services/ampService'
 
 export function PresetDetailsPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [preset, setPreset] = useState<Preset | null>(null)
+  const [amp, setAmp] = useState<Amp | null>(null)
 
   useEffect(() => {
-    async function loadPreset() {
+    async function loadData() {
       const presets = await getPresets()
 
       const foundPreset =
         presets.find(p => p.id === id) || null
 
       setPreset(foundPreset)
+
+      if (!foundPreset) {
+        setAmp(null)
+
+        return
+      }
+
+      const ampData =
+        await getAmpById(foundPreset.ampId)
+
+      setAmp(ampData ?? null)
     }
 
-    loadPreset()
+    loadData()
   }, [id])
 
   if (!preset) {
@@ -37,8 +49,6 @@ export function PresetDetailsPage() {
     )
   }
 
-  const amp = amps.find(a => a.id === preset.ampId)
-
   if (!amp) {
     return (
       <div className="p-6 text-white">
@@ -46,6 +56,8 @@ export function PresetDetailsPage() {
       </div>
     )
   }
+
+  const presetId = preset.id
 
   async function handleDeletePreset() {
     const confirmed = confirm(
@@ -56,7 +68,7 @@ export function PresetDetailsPage() {
       return
     }
 
-    await deletePreset(preset.id)
+    await deletePreset(presetId)
 
     navigate('/')
   }

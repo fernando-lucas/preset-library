@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react'
+
 import type { Preset } from '../types/preset'
-import { amps } from '../data/amps'
+import type { Amp } from '../types/amp'
 import { Link } from 'react-router-dom'
 import { swapPresetOrder } from '../services/presetService'
+import { getAmpById } from '../services/ampService'
 
 interface Props {
   preset: Preset
@@ -12,10 +15,22 @@ interface Props {
 
 
 export function PresetCard({ preset, index, presets, onReorder }: Props) {
-  const amp = amps.find(a => a.id === preset.ampId)
+  const [amp, setAmp] =
+    useState<Amp | null>(null)
+
+  useEffect(() => {
+    async function loadAmp() {
+      const data = await getAmpById(
+        preset.ampId
+      )
+
+      setAmp(data ?? null)
+    }
+
+    loadAmp()
+  }, [preset.ampId])
 
   if (!amp) return null
-
 
   async function moveUp() {
     if (index === 0) return

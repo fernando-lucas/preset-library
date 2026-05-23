@@ -1,4 +1,5 @@
 import { db } from '../database/db'
+import { seedDatabase } from '../database/seed'
 
 import {
   setActiveSetlist,
@@ -6,6 +7,9 @@ import {
 } from './activeSetlist'
 
 export async function initializeApp() {
+
+  await seedDatabase()
+
   const setlists =
     await db.setlists.toArray()
 

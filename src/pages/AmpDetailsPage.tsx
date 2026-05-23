@@ -1,23 +1,31 @@
 import { Link, useParams } from 'react-router-dom'
 
-import { amps } from '../data/amps'
-
 import { getPresets } from '../services/presetService'
+import { getAmpById } from '../services/ampService'
 
 import { useEffect, useState } from 'react'
 
 import type { Preset } from '../types/preset'
+import type { Amp } from '../types/amp'
 
 export function AmpDetailsPage() {
   const { id } = useParams()
 
-  const amp = amps.find(a => a.id === id)
+  const [amp, setAmp] =
+    useState<Amp | null>(null)
 
   const [relatedPresets, setRelatedPresets] =
     useState<Preset[]>([])
 
   useEffect(() => {
-    async function loadPresets() {
+    async function loadData() {
+      if (!id) return
+
+      const ampData =
+        await getAmpById(id)
+
+      setAmp(ampData ?? null)
+
       const presets = await getPresets()
 
       const filtered = presets.filter(
@@ -27,7 +35,7 @@ export function AmpDetailsPage() {
       setRelatedPresets(filtered)
     }
 
-    loadPresets()
+    loadData()
   }, [id])
 
   if (!amp) {

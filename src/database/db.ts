@@ -5,10 +5,9 @@ import type { Amp } from '../types/amp'
 import type { Setlist } from '../types/setlist'
 
 export class PresetLibraryDatabase extends Dexie {
+  
   presets!: Table<Preset>
-
   amps!: Table<Amp>
-
   setlists!: Table<Setlist>
 
   constructor() {

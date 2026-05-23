@@ -1,10 +1,26 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { AmpCard } from '../components/AmpCard'
 
-import { amps } from '../data/amps'
+import { getAmps } from '../services/ampService'
+
+import type { Amp } from '../types/amp'
 
 export function AmpsPage() {
+  const [amps, setAmps] =
+    useState<Amp[]>([])
+
+  useEffect(() => {
+    async function loadAmps() {
+      const data = await getAmps()
+
+      setAmps(data)
+    }
+
+    loadAmps()
+  }, [])
+
   return (
     <div className="min-h-screen bg-zinc-900 p-6">
       <h1 className="text-4xl font-bold text-white">

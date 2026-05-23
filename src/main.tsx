@@ -1,13 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { seedDatabase } from './database/seed'
 import { initializeApp } from './lib/initializeApp'
 
 import App from './App'
 import './index.css'
-
-seedDatabase()
 
 async function bootstrap() {
   await initializeApp()

@@ -1,8 +1,9 @@
-import { useState } from 'react'
-
-import { amps } from '../data/amps'
+import { useEffect, useState } from 'react'
 
 import type { Preset } from '../types/preset'
+import type { Amp } from '../types/amp'
+
+import { getAmps } from '../services/ampService'
 
 interface Props {
   initialData?: Preset
@@ -34,6 +35,19 @@ export function PresetForm({
   const [selectedAmp, setSelectedAmp] = useState(
     initialData?.ampId || ''
   )
+
+  const [amps, setAmps] =
+    useState<Amp[]>([])
+
+  useEffect(() => {
+    async function loadAmps() {
+      const data = await getAmps()
+
+      setAmps(data)
+    }
+
+    loadAmps()
+  }, [])
 
   function handleSubmit() {
     if (!name || !selectedAmp) {
