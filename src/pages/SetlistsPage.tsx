@@ -1,14 +1,10 @@
 import { useEffect, useState } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { getSetlists } from '../services/setlistService'
+import { getSetlists, deleteSetlist, createSetlist } from '../services/setlistService'
 
 import type { Setlist } from '../types/setlist'
-
-import { useNavigate } from 'react-router-dom'
-
-import {deleteSetlist } from '../services/setlistService'
 
 import {
   getActiveSetlist,
@@ -52,7 +48,24 @@ export function SetlistsPage() {
     const active =
       getActiveSetlist()
 
-    if (active === id && updated.length > 0) {
+    if (updated.length === 0) {
+      const newSetlist = {
+        id: crypto.randomUUID(),
+
+        name: 'My Presets',
+
+        description:
+          'Default preset collection',
+      }
+
+      await createSetlist(newSetlist)
+
+      setActiveSetlist(
+        newSetlist.id
+      )
+    }
+
+    else if (active === id) {
       setActiveSetlist(
         updated[0].id
       )
