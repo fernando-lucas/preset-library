@@ -14,3 +14,9 @@ export function getActiveSetlist() {
     STORAGE_KEY
   )
 }
+
+export function clearActiveSetlist() {
+  localStorage.removeItem(
+    STORAGE_KEY
+  )
+}

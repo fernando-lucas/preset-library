@@ -10,6 +10,7 @@ import { SetlistsPage } from './pages/SetlistsPage'
 import { NewSetlistPage } from './pages/NewSetlistPage'
 import { BottomNavigation } from './components/BottomNavigation'
 import { EditSetlistPage } from './pages/EditSetlistPage'
+import { BackupPage } from './pages/BackupPage'
 
 function App() {
   return (
@@ -52,6 +53,10 @@ function App() {
         <Route
           path="/setlists/:id/edit"
           element={<EditSetlistPage />}
+        />
+        <Route
+          path="/backup"
+          element={<BackupPage />}
         />
 
       </Routes>

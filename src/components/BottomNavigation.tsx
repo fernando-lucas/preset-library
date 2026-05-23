@@ -84,6 +84,23 @@ export function BottomNavigation() {
           Amps
         </Link>
 
+        <Link
+          to="/backup"
+          className={`
+            text-sm
+            font-medium
+            transition
+
+            ${
+              isActive('/backup')
+                ? 'text-white'
+                : 'text-zinc-500'
+            }
+          `}
+        >
+          Backup
+        </Link>
+
       </div>
 
     </div>
