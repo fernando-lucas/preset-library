@@ -11,30 +11,33 @@ import { getActiveSetlist, } from '../lib/activeSetlist'
 
 import { getSetlistById, } from '../services/setlistService'
 
+
 export function HomePage() {
   const [search, setSearch] = useState('')
   const [presets, setPresets] = useState<Preset[]>([])
+    async function loadPresets() {
+    const data = await getPresets()
+
+    const activeSetlistId =
+      getActiveSetlist()
+
+    const filtered = data.filter(
+      preset =>
+        preset.setlistId ===
+        activeSetlistId
+    )
+
+    setPresets(filtered)
+  }
   const [selectedTag, setSelectedTag] = useState('')
   const [activeSetlistName, setActiveSetlistName] = useState('')
 
   useEffect(() => {
     async function loadData() {
-      const allPresets =
-        await getPresets()
+      await loadPresets()
 
       const activeSetlistId =
         getActiveSetlist()
-
-      const filteredPresets =
-        activeSetlistId
-          ? allPresets.filter(
-              preset =>
-                preset.setlistId ===
-                activeSetlistId
-            )
-          : allPresets
-
-      setPresets(filteredPresets)
 
       if (activeSetlistId) {
         const setlist =
@@ -248,10 +251,20 @@ export function HomePage() {
               index={index}
               presets={filteredPresets}
               onReorder={async () => {
-                const data = await getPresets()
+              const data = await getPresets()
 
-                setPresets(data)
-              }}
+              const activeSetlistId =
+                getActiveSetlist()
+
+              const filtered =
+                data.filter(
+                  preset =>
+                    preset.setlistId ===
+                    activeSetlistId
+                )
+
+              setPresets(filtered)
+            }}
             />
           ))}
         </div>
