@@ -1,6 +1,6 @@
 import { db } from './db'
 
-import noImg from '../assets/amps/no_image.jpg'
+import genericAmpImg from '../assets/amps/generic-amp.webp'
 
 export async function seedDatabase() {
   const ampCount =
@@ -12,43 +12,43 @@ export async function seedDatabase() {
         id: '1',
         name: 'Studio Signature',
         brand: 'Two Rock',
-        image: noImg,
+        image: genericAmpImg,
         description: 'Amp boutique limpo e fusion moderno',
       },
       {
         id: '2',
         name: '5150 III',
         brand: 'EVH',
-        image: noImg,
+        image: genericAmpImg,
         description: 'High gain moderno para metal',
       },
       {
         id: '3',
         name: 'JCM 800',
         brand: 'Marshall',
-        image: noImg,
+        image: genericAmpImg,
         description: 'High gain moderno para metal',
       },
       {
         id: '4',
         name: 'Deluxe Reverb 65',
         brand: 'Fender',
-        image: noImg,
+        image: genericAmpImg,
         description: 'Amp Classico limpo e vintage',
       },
       {
         id: '5',
         name: 'AC30',
         brand: 'Vox',
-        image: noImg,
+        image: genericAmpImg,
         description: 'Amp Classico limpo e vintage',
       },
       {
         id: '6',
-        name: 'Outro',
-        brand: 'Outro',
-        image: noImg,
-        description: 'N/A',
+        name: 'Generic Amp',
+        brand: 'Generic',
+        image: genericAmpImg,
+        description: 'Amp genérico para presets sem amp específico',
       },
     ]
     )
@@ -58,7 +58,7 @@ export async function seedDatabase() {
     await db.amps.bulkPut(
       amps.map(amp => ({
         ...amp,
-        image: noImg,
+        image: genericAmpImg,
       }))
     )
   }
