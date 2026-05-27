@@ -90,35 +90,56 @@ export function SetlistsPage() {
 
       <div className="mx-auto max-w-5xl">
 
-        <div className="flex items-center justify-between">
+        <div
+          className="
+            sticky
+            top-0
+            z-20
+            -mx-6
+            border-b
+            border-zinc-800
+            bg-zinc-950/95
+            px-6
+            py-4
+            backdrop-blur-xl
+          "
+        >
+          <div className="flex items-center justify-between gap-4">
 
-          <div>
-            <h1 className="text-3xl font-bold">
-              Setlists
-            </h1>
+            <div className="min-w-0">
+              <h1 className="truncate text-3xl font-bold">
+                Setlists
+              </h1>
 
-            <p className="mt-1 text-zinc-500">
-              Organize seus presets
-            </p>
+              <p className="mt-1 text-zinc-500">
+                Crie setlists para seus presets
+              </p>
+            </div>
+
+            <Link
+              to="/new-setlist"
+              className="
+                flex
+                h-10
+                w-10
+                shrink-0
+                items-center
+                justify-center
+                rounded-full
+                bg-white
+                text-4xl
+                font-light
+                text-black
+                shadow-lg
+                transition-all
+                duration-200
+                hover:scale-105
+              "
+            >
+              +
+            </Link>
+
           </div>
-
-          <Link
-            to="/new-setlist"
-            className="
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-full
-              bg-white
-              text-3xl
-              text-black
-            "
-          >
-            +
-          </Link>
-
         </div>
 
         <div className="mt-10 grid gap-6">

@@ -100,14 +100,14 @@ export function HomePage() {
 
         {/* HEADER */}
 
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <h1 className="break-words text-3xl font-bold tracking-tight">
               {activeSetlistName || 'My Presets'}
             </h1>
 
             <p className="mt-1 text-sm text-zinc-500">
-              Guitar preset collection
+              Sua coleção de presets
             </p>
           </div>
 
@@ -117,6 +117,7 @@ export function HomePage() {
               flex
               h-10
               w-10
+              shrink-0
               items-center
               justify-center
               rounded-full
@@ -130,8 +131,7 @@ export function HomePage() {
               hover:scale-105
             "
           >
-            <span className="-translate-y-[2px]"> + </span>
-          
+            + 
           </Link>
         </div>
 

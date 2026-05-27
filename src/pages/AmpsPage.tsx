@@ -22,13 +22,28 @@ export function AmpsPage() {
 
   return (
     <div className="min-h-screen bg-zinc-900 p-6">
-      <h1 className="text-3xl font-bold text-white">
-        Biblioteca de Amps
-      </h1>
+      <div
+        className="
+          sticky
+          top-0
+          z-20
+          -mx-6
+          border-b
+          border-zinc-800
+          bg-zinc-900/95
+          px-6
+          py-4
+          backdrop-blur-xl
+        "
+      >
+        <h1 className="text-3xl font-bold text-white">
+          Biblioteca de Amps
+        </h1>
 
-      <p className="mt-2 text-zinc-400">
-        Explore amplificadores usados nos presets
-      </p>
+        <p className="mt-2 text-zinc-400">
+          Explore amplificadores usados nos presets
+        </p>
+      </div>
       
       <div className="
         mt-8
