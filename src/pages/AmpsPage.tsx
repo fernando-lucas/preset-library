@@ -32,7 +32,8 @@ export function AmpsPage() {
           border-zinc-800
           bg-zinc-900/95
           px-6
-          py-4
+          pb-4
+          pt-0
           backdrop-blur-xl
         "
       >

@@ -100,18 +100,18 @@ export function SetlistsPage() {
             border-zinc-800
             bg-zinc-950/95
             px-6
-            py-4
+            pt-0
+            pb-4
             backdrop-blur-xl
           "
         >
-          <div className="flex items-center justify-between gap-4">
-
-            <div className="min-w-0">
-              <h1 className="truncate text-3xl font-bold">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <h1 className="break-words text-3xl font-bold tracking-tight">
                 Setlists
               </h1>
 
-              <p className="mt-1 text-zinc-500">
+              <p className="mt-1 text-sm text-zinc-500">
                 Crie setlists para seus presets
               </p>
             </div>

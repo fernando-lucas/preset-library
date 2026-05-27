@@ -137,109 +137,125 @@ export function HomePage() {
 
         {/* SEARCH */}
 
-        <div className="mt-8">
-          <input
-            type="text"
-            placeholder="Search presets..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="
-              w-full
-              rounded-3xl
-              border
-              border-zinc-800
-              bg-zinc-900
-              px-6
-              py-4
-              text-base
-              text-white
-              outline-none
-              transition-all
-              focus:border-zinc-600
-            "
-          />
-        </div>
-
-        {/* TAGS */}
-
         <div
           className="
-            mt-6
-            flex
-            gap-3
-            overflow-x-auto
-            pb-2
+            sticky
+            top-0
+            z-20
+            -mx-5
+            mt-8
+            border-b
+            border-zinc-800
+            bg-zinc-950/95
+            px-5
+            pb-4
+            pt-0
+            backdrop-blur-xl
           "
         >
-          <button
-            onClick={() => setSelectedTag('')}
-            className={`
-              whitespace-nowrap
-              rounded-full
-              border
-              px-5
-              py-2.5
-              text-sm
-              font-medium
-              transition-all
-
-              ${
-                selectedTag === ''
-                  ? `
-                    border-white
-                    bg-white
-                    text-black
-                  `
-                  : `
-                    border-zinc-800
-                    bg-zinc-900
-                    text-zinc-300
-                  `
-              }
-            `}
-          >
-            All
-          </button>
-
-          {availableTags.map(tag => (
-            <button
-              key={tag}
-              onClick={() => setSelectedTag(tag)}
-              className={`
-                whitespace-nowrap
-                rounded-full
-                border
-                px-5
-                py-2.5
-                text-sm
-                font-medium
-                transition-all
-
-                ${
-                  selectedTag === tag
-                    ? `
-                      border-white
-                      bg-white
-                      text-black
-                    `
-                    : `
-                      border-zinc-800
-                      bg-zinc-900
-                      text-zinc-300
-                    `
-                }
-              `}
+          <div className="space-y-4">
+            <div>
+              <input
+                type="text"
+                placeholder="Search presets..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                className="
+                  w-full
+                  rounded-3xl
+                  border
+                  border-zinc-800
+                  bg-zinc-900
+                  px-6
+                  py-3
+                  text-base
+                  text-white
+                  outline-none
+                  transition-all
+                  focus:border-zinc-600
+                "
+              />
+            </div>
+            {/* TAGS */}
+            <div
+              className="
+                flex
+                gap-3
+                overflow-x-auto
+                pb-2
+              "
             >
-              #{tag}
-            </button>
-          ))}
+              <button
+                onClick={() => setSelectedTag('')}
+                className={`
+                  whitespace-nowrap
+                  rounded-full
+                  border
+                  px-5
+                  py-2.5
+                  text-sm
+                  font-medium
+                  transition-all
+
+                  ${
+                    selectedTag === ''
+                      ? `
+                        border-white
+                        bg-white
+                        text-black
+                      `
+                      : `
+                        border-zinc-800
+                        bg-zinc-900
+                        text-zinc-300
+                      `
+                  }
+                `}
+              >
+                All
+              </button>
+
+              {availableTags.map(tag => (
+                <button
+                  key={tag}
+                  onClick={() => setSelectedTag(tag)}
+                  className={`
+                    whitespace-nowrap
+                    rounded-full
+                    border
+                    px-5
+                    py-2.5
+                    text-sm
+                    font-medium
+                    transition-all
+
+                    ${
+                      selectedTag === tag
+                        ? `
+                          border-white
+                          bg-white
+                          text-black
+                        `
+                        : `
+                          border-zinc-800
+                          bg-zinc-900
+                          text-zinc-300
+                        `
+                    }
+                  `}
+                >
+                  #{tag}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* PRESETS */}
 
         <div
           className="
-            mt-10
+            mt-6
             grid
             grid-cols-1
             gap-8

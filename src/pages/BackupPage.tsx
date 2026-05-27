@@ -54,17 +54,33 @@ export function BackupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 p-6 text-white">
+    <div className="min-h-[calc(100dvh-7rem)] bg-zinc-950 p-6 text-white">
       <div className="mx-auto max-w-3xl">
-        <h1 className="text-3xl font-bold">
-          Backup
-        </h1>
+        <div
+          className="
+            sticky
+            top-0
+            z-20
+            -mx-6
+            border-b
+            border-zinc-800
+            bg-zinc-950/95
+            px-6
+            pt-0
+            pb-4
+            backdrop-blur-xl
+          "
+        >
+          <h1 className="text-3xl font-bold">
+            Backup
+          </h1>
 
-        <p className="mt-2 text-zinc-500">
-          Exporte e importe sua biblioteca local.
-        </p>
+          <p className="mt-2 text-zinc-500">
+            Exporte e importe sua biblioteca local.
+          </p>
+        </div>
 
-        <div className="mt-10 grid gap-6">
+        <div className="mt-8 grid gap-6">
           <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6">
             <h2 className="text-xl font-semibold">
               Exportar dados
