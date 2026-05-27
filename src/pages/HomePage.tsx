@@ -183,6 +183,8 @@ export function HomePage() {
                 gap-3
                 overflow-x-auto
                 pb-2
+                whitespace-nowrap
+                hide-scrollbar
               "
             >
               <button
