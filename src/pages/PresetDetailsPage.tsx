@@ -125,16 +125,6 @@ return (
           </span>
         ))}
       </div>
-
-      <div className="mt-10">
-        <h2 className="text-2xl font-semibold">
-          Sobre o amplificador
-        </h2>
-
-        <p className="mt-3 text-zinc-400">
-          {amp.description}
-        </p>
-      </div>
     
     <div className="mt-8 flex gap-4">
       <Link
