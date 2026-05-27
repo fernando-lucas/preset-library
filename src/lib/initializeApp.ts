@@ -5,6 +5,7 @@ import {
   setActiveSetlist,
   getActiveSetlist,
 } from './activeSetlist'
+import { createId } from './createId'
 
 export async function initializeApp() {
 
@@ -15,7 +16,7 @@ export async function initializeApp() {
 
   if (setlists.length === 0) {
     const defaultSetlist = {
-      id: crypto.randomUUID(),
+      id: createId(),
 
       name: 'My Presets',
 

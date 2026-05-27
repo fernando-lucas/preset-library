@@ -14,6 +14,7 @@ import {
   getActiveSetlist,
   setActiveSetlist
 } from '../lib/activeSetlist'
+import { createId } from '../lib/createId'
 
 
 export function SetlistsPage() {
@@ -52,7 +53,7 @@ export function SetlistsPage() {
 
     if (updated.length === 0) {
       const newSetlist = {
-        id: crypto.randomUUID(),
+        id: createId(),
 
         name: 'My Presets',
 

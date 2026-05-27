@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { createSetlist } from '../services/setlistService'
+import { createId } from '../lib/createId'
 
 export function NewSetlistPage() {
   const navigate = useNavigate()
@@ -17,7 +18,7 @@ export function NewSetlistPage() {
     e.preventDefault()
 
     await createSetlist({
-      id: crypto.randomUUID(),
+      id: createId(),
       name,
       description,
     })
