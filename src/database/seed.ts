@@ -1,66 +1,107 @@
 import { db } from './db'
 
-import genericAmpImg from '../assets/amps/generic-amp.webp'
+import { ampImages, defaultAmpImage } from '../data/ampImages'
+import { createId } from '../lib/createId'
+
+const imageById = Object.fromEntries(
+  ampImages.map(image => [
+    image.id,
+    image.src,
+  ])
+)
+
+const seedAmps = [
+  {
+    id: '1',
+    name: 'Studio Signature',
+    brand: 'Two Rock',
+    image:
+      imageById['two-rock-studio-signature'] ??
+      defaultAmpImage,
+    description: 'Amp boutique limpo e fusion moderno',
+  },
+  {
+    id: '2',
+    name: '5150 III',
+    brand: 'EVH',
+    image:
+      imageById['evh-5150-iii'] ??
+      defaultAmpImage,
+    description: 'High gain moderno para metal',
+  },
+  {
+    id: '3',
+    name: 'JCM 800',
+    brand: 'Marshall',
+    image:
+      imageById['marshall-jcm-800'] ??
+      defaultAmpImage,
+    description: 'High gain moderno para metal',
+  },
+  {
+    id: '4',
+    name: 'Deluxe Reverb 65',
+    brand: 'Fender',
+    image:
+      imageById['fender-65-deluxe-reverb'] ??
+      defaultAmpImage,
+    description: 'Amp Classico limpo e vintage',
+  },
+  {
+    id: '5',
+    name: 'AC30',
+    brand: 'Vox',
+    image:
+      imageById['vox-ac30'] ??
+      defaultAmpImage,
+    description: 'Amp Classico limpo e vintage',
+  },
+  {
+    id: '6',
+    name: 'Generic Amp',
+    brand: 'Generic',
+    image: defaultAmpImage,
+    description: 'Amp genérico para presets sem amp específico',
+  },
+  {
+    id: '7',
+    name: 'Deluxe Reverb 65',
+    brand: 'Fender',
+    image:
+      imageById['fender-65-deluxe-reverb-v2'] ??
+      defaultAmpImage,
+    description: 'Amp Classico limpo e vintage',
+  },
+  {
+    id: '8',
+    name: 'JCM 800 Studio',
+    brand: 'Marshall',
+    image:
+      imageById['marshall-jcm-800-studio'] ??
+      defaultAmpImage,
+    description: 'Amp classico para rock',
+  },
+]
 
 export async function seedDatabase() {
-  const ampCount =
-  await db.amps.count()
+  const existingAmps =
+    await db.amps.toArray()
 
-  if (ampCount === 0) {
-    await db.amps.bulkAdd([
-      {
-        id: '1',
-        name: 'Studio Signature',
-        brand: 'Two Rock',
-        image: genericAmpImg,
-        description: 'Amp boutique limpo e fusion moderno',
-      },
-      {
-        id: '2',
-        name: '5150 III',
-        brand: 'EVH',
-        image: genericAmpImg,
-        description: 'High gain moderno para metal',
-      },
-      {
-        id: '3',
-        name: 'JCM 800',
-        brand: 'Marshall',
-        image: genericAmpImg,
-        description: 'High gain moderno para metal',
-      },
-      {
-        id: '4',
-        name: 'Deluxe Reverb 65',
-        brand: 'Fender',
-        image: genericAmpImg,
-        description: 'Amp Classico limpo e vintage',
-      },
-      {
-        id: '5',
-        name: 'AC30',
-        brand: 'Vox',
-        image: genericAmpImg,
-        description: 'Amp Classico limpo e vintage',
-      },
-      {
-        id: '6',
-        name: 'Generic Amp',
-        brand: 'Generic',
-        image: genericAmpImg,
-        description: 'Amp genérico para presets sem amp específico',
-      },
-    ]
-    )
+  if (existingAmps.length === 0) {
+    await db.amps.bulkAdd(seedAmps)
   } else {
-    const amps = await db.amps.toArray()
-
-    await db.amps.bulkPut(
-      amps.map(amp => ({
-        ...amp,
-        image: genericAmpImg,
-      }))
+    const missingSeedAmps = seedAmps.filter(
+      seedAmp =>
+        !existingAmps.some(
+          amp => amp.id === seedAmp.id
+        )
     )
+
+    if (missingSeedAmps.length > 0) {
+      await db.amps.bulkPut(
+        missingSeedAmps
+      )
+    }
   }
 
   const presetCount =
@@ -77,7 +118,7 @@ export async function seedDatabase() {
       .first()
 
   if (!defaultSetlist) {
-    const id = crypto.randomUUID()
+    const id = createId()
 
     defaultSetlist = {
       id,
@@ -94,7 +135,7 @@ export async function seedDatabase() {
 
   await db.presets.bulkAdd([
     {
-      id: crypto.randomUUID(),
+      id: createId(),
 
       name: 'Fusion Lead',
 
@@ -115,7 +156,7 @@ export async function seedDatabase() {
     },
 
     {
-      id: crypto.randomUUID(),
+      id: createId(),
 
       name: 'Metal Rhythm',
 

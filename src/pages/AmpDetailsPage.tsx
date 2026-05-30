@@ -87,6 +87,26 @@ export function AmpDetailsPage() {
           {amp.description}
         </p>
 
+        <div className="mt-8">
+          <Link
+            to={`/amp/${amp.id}/edit`}
+            className="
+              inline-flex
+              items-center
+              rounded-xl
+              bg-white
+              px-5
+              py-3
+              font-medium
+              text-black
+              transition
+              hover:opacity-80
+            "
+          >
+            Editar Amp
+          </Link>
+        </div>
+
         <div className="mt-10">
           <h2 className="text-2xl font-semibold">
             Presets usando este amp

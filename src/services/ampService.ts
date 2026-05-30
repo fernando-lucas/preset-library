@@ -3,7 +3,17 @@ import { db } from '../database/db'
 import type { Amp } from '../types/amp'
 
 export async function getAmps() {
-  return await db.amps.toArray()
+  const amps = await db.amps.toArray()
+
+  return amps.sort((a, b) =>
+    `${a.name} ${a.brand}`.localeCompare(
+      `${b.name} ${b.brand}`,
+      'pt-BR',
+      {
+        sensitivity: 'base',
+      }
+    )
+  )
 }
 
 export async function getAmpById(
@@ -16,4 +26,10 @@ export async function createAmp(
   amp: Amp
 ) {
   return await db.amps.add(amp)
+}
+
+export async function updateAmp(
+  amp: Amp
+) {
+  return await db.amps.put(amp)
 }
