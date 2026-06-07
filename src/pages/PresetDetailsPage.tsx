@@ -4,18 +4,27 @@ import {
   useParams,
 } from 'react-router-dom'
 
-import { useEffect, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import type { PointerEvent } from 'react'
 import type { Preset } from '../types/preset'
 import type { Amp } from '../types/amp'
 import { getPresets } from '../services/presetService'
 import { deletePreset } from '../services/presetService'
 import { getAmpById } from '../services/ampService'
 
+const SWIPE_THRESHOLD = 70
+
 export function PresetDetailsPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [preset, setPreset] = useState<Preset | null>(null)
   const [amp, setAmp] = useState<Amp | null>(null)
+  const [orderedPresets, setOrderedPresets] = useState<Preset[]>([])
+  const pointerStartX = useRef<number | null>(null)
 
   useEffect(() => {
     async function loadData() {
@@ -28,9 +37,18 @@ export function PresetDetailsPage() {
 
       if (!foundPreset) {
         setAmp(null)
+        setOrderedPresets([])
 
         return
       }
+
+      const setlistPresets = presets
+        .filter(item =>
+          item.setlistId === foundPreset.setlistId
+        )
+        .sort((a, b) => a.order - b.order)
+
+      setOrderedPresets(setlistPresets)
 
       const ampData =
         await getAmpById(foundPreset.ampId)
@@ -58,6 +76,57 @@ export function PresetDetailsPage() {
   }
 
   const presetId = preset.id
+  const currentIndex = orderedPresets.findIndex(
+    item => item.id === presetId
+  )
+
+  const previousPreset =
+    currentIndex > 0
+      ? orderedPresets[currentIndex - 1]
+      : null
+
+  const nextPreset =
+    currentIndex >= 0 &&
+    currentIndex < orderedPresets.length - 1
+      ? orderedPresets[currentIndex + 1]
+      : null
+
+  function goToPreset(
+    targetPreset: Preset | null
+  ) {
+    if (!targetPreset) return
+
+    navigate(`/preset/${targetPreset.id}`)
+  }
+
+  function handlePointerDown(
+    event: PointerEvent<HTMLDivElement>
+  ) {
+    pointerStartX.current = event.clientX
+  }
+
+  function handlePointerUp(
+    event: PointerEvent<HTMLDivElement>
+  ) {
+    if (pointerStartX.current === null) return
+
+    const distance =
+      event.clientX - pointerStartX.current
+
+    pointerStartX.current = null
+
+    if (Math.abs(distance) < SWIPE_THRESHOLD) {
+      return
+    }
+
+    if (distance < 0) {
+      goToPreset(nextPreset)
+
+      return
+    }
+
+    goToPreset(previousPreset)
+  }
 
   async function handleDeletePreset() {
     const confirmed = confirm(
@@ -75,7 +144,11 @@ export function PresetDetailsPage() {
 
 
 return (
-    <div className="min-h-screen bg-zinc-900 text-white">
+    <div
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      className="min-h-screen touch-pan-y bg-zinc-900 text-white"
+    >
         <div className="p-4">
             <Link
                 to="/"
@@ -125,6 +198,26 @@ return (
           </span>
         ))}
       </div>
+
+      {orderedPresets.length > 1 && (
+        <div className="mt-8 flex items-center justify-between gap-3 text-sm text-zinc-500">
+          <span className="truncate">
+            {previousPreset
+              ? `← ${previousPreset.name}`
+              : 'Início da setlist'}
+          </span>
+
+          <span className="shrink-0">
+            {currentIndex + 1}/{orderedPresets.length}
+          </span>
+
+          <span className="truncate text-right">
+            {nextPreset
+              ? `${nextPreset.name} →`
+              : 'Fim da setlist'}
+          </span>
+        </div>
+      )}
     
     <div className="mt-8 flex gap-4">
       <Link
