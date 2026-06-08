@@ -1,6 +1,7 @@
 import { db } from './db'
 
 import genericAmpImg from '../assets/amps/generic-amp.webp'
+import { createId } from '../lib/createId'
 
 export async function seedDatabase() {
   const ampCount =
@@ -77,13 +78,14 @@ export async function seedDatabase() {
       .first()
 
   if (!defaultSetlist) {
-    const id = crypto.randomUUID()
+    const id = createId()
 
     defaultSetlist = {
       id,
       name: 'My Presets',
       description:
         'Default preset collection',
+      order: 0,
     }
 
     await db.setlists.add(
@@ -94,7 +96,7 @@ export async function seedDatabase() {
 
   await db.presets.bulkAdd([
     {
-      id: crypto.randomUUID(),
+      id: createId(),
 
       name: 'Fusion Lead',
 
@@ -115,7 +117,7 @@ export async function seedDatabase() {
     },
 
     {
-      id: crypto.randomUUID(),
+      id: createId(),
 
       name: 'Metal Rhythm',
 

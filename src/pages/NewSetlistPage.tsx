@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { createSetlist } from '../services/setlistService'
+import {
+  createSetlist,
+  getSetlists,
+} from '../services/setlistService'
 import { createId } from '../lib/createId'
 
 export function NewSetlistPage() {
@@ -17,10 +20,14 @@ export function NewSetlistPage() {
   ) {
     e.preventDefault()
 
+    const setlists =
+      await getSetlists()
+
     await createSetlist({
       id: createId(),
       name,
       description,
+      order: setlists.length,
     })
 
     navigate('/setlists')

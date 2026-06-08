@@ -9,6 +9,7 @@ import {
   getSetlistById,
   updateSetlist,
 } from '../services/setlistService'
+import type { Setlist } from '../types/setlist'
 
 export function EditSetlistPage() {
   const { id } = useParams()
@@ -20,6 +21,9 @@ export function EditSetlistPage() {
   const [description, setDescription] =
     useState('')
 
+  const [setlist, setSetlist] =
+    useState<Setlist | null>(null)
+
   useEffect(() => {
     async function loadSetlist() {
       if (!id) return
@@ -28,6 +32,8 @@ export function EditSetlistPage() {
         await getSetlistById(id)
 
       if (!setlist) return
+
+      setSetlist(setlist)
 
       setName(setlist.name)
 
@@ -44,10 +50,10 @@ export function EditSetlistPage() {
   ) {
     e.preventDefault()
 
-    if (!id) return
+    if (!setlist) return
 
     await updateSetlist({
-      id,
+      ...setlist,
       name,
       description,
     })

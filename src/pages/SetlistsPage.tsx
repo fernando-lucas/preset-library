@@ -6,6 +6,8 @@ import {
   getSetlists,
   deleteSetlist,
   createSetlist,
+  swapSetlistOrder,
+  getPresetCountsBySetlist,
 } from '../services/setlistService'
 
 import type { Setlist } from '../types/setlist'
@@ -22,14 +24,28 @@ export function SetlistsPage() {
     Setlist[]
   >([])
 
-  useEffect(() => {
-    async function loadSetlists() {
-      const data = await getSetlists()
+  const [presetCounts, setPresetCounts] =
+    useState<Record<string, number>>({})
 
-      setSetlists(data)
+  async function loadSetlists() {
+    const [
+      data,
+      counts,
+    ] = await Promise.all([
+      getSetlists(),
+      getPresetCountsBySetlist(),
+    ])
+
+    setSetlists(data)
+    setPresetCounts(counts)
+  }
+
+  useEffect(() => {
+    async function loadData() {
+      await loadSetlists()
     }
 
-    loadSetlists()
+    loadData()
   }, [])
 
   const navigate = useNavigate()
@@ -59,6 +75,8 @@ export function SetlistsPage() {
 
         description:
           'Default preset collection',
+
+        order: 0,
       }
 
       await createSetlist(newSetlist)
@@ -68,6 +86,7 @@ export function SetlistsPage() {
       )
 
       setSetlists([newSetlist])
+      setPresetCounts({})
     }
 
     else if (active === id) {
@@ -76,13 +95,45 @@ export function SetlistsPage() {
       )
 
       setSetlists(updated)
+      setPresetCounts(
+        await getPresetCountsBySetlist()
+      )
     }
 
     else {
       setSetlists(updated)
+      setPresetCounts(
+        await getPresetCountsBySetlist()
+      )
     }
 
     navigate('/')
+  }
+
+  async function moveSetlistUp(
+    index: number
+  ) {
+    if (index === 0) return
+
+    await swapSetlistOrder(
+      setlists[index],
+      setlists[index - 1]
+    )
+
+    await loadSetlists()
+  }
+
+  async function moveSetlistDown(
+    index: number
+  ) {
+    if (index === setlists.length - 1) return
+
+    await swapSetlistOrder(
+      setlists[index],
+      setlists[index + 1]
+    )
+
+    await loadSetlists()
   }
 
   return (
@@ -144,10 +195,11 @@ export function SetlistsPage() {
 
         <div className="mt-10 grid gap-6">
 
-          {setlists.map(setlist => (
+          {setlists.map((setlist, index) => (
             <div
                 key={setlist.id}
                 className="
+                relative
                 rounded-3xl
                 border
                 border-zinc-800
@@ -165,7 +217,7 @@ export function SetlistsPage() {
 
                   navigate('/')
                 }}
-                className="block w-full text-left"
+                className="block w-full pr-12 text-left"
               >
                 <h2 className="text-2xl font-semibold">
                 {setlist.name}
@@ -174,9 +226,68 @@ export function SetlistsPage() {
                 <p className="mt-3 text-zinc-400">
                 {setlist.description}
                 </p>
+
+                <p className="mt-4 text-sm text-zinc-500">
+                  {presetCounts[setlist.id] ?? 0}{' '}
+                  {(presetCounts[setlist.id] ?? 0) === 1
+                    ? 'preset'
+                    : 'presets'}
+                </p>
               </button>
+
+              <div className="absolute bottom-5 right-5 flex flex-col gap-2">
+
+                <button
+                  onClick={() => {
+                    moveSetlistUp(index)
+                  }}
+                  className="
+                    flex
+                    h-9
+                    w-9
+                    items-center
+                    justify-center
+                    rounded-full
+                    border
+                    border-zinc-800
+                    bg-zinc-900
+                    text-sm
+                    text-zinc-400
+                    transition-all
+                    hover:border-zinc-600
+                    hover:text-white
+                  "
+                >
+                  ↑
+                </button>
+
+                <button
+                  onClick={() => {
+                    moveSetlistDown(index)
+                  }}
+                  className="
+                    flex
+                    h-9
+                    w-9
+                    items-center
+                    justify-center
+                    rounded-full
+                    border
+                    border-zinc-800
+                    bg-zinc-900
+                    text-sm
+                    text-zinc-400
+                    transition-all
+                    hover:border-zinc-600
+                    hover:text-white
+                  "
+                >
+                  ↓
+                </button>
+
+              </div>
                 
-                <div className="mt-6 flex gap-3">
+                <div className="mt-6 flex flex-wrap gap-3">
 
                 <Link
                   to={`/setlists/${setlist.id}/edit`}

@@ -22,6 +22,8 @@ export async function initializeApp() {
 
       description:
         'Default preset collection',
+
+      order: 0,
     }
 
     await db.setlists.add(
