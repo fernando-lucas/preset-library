@@ -33,3 +33,9 @@ export async function updateAmp(
 ) {
   return await db.amps.put(amp)
 }
+
+export async function deleteAmp(
+  id: string
+) {
+  await db.amps.delete(id)
+}

@@ -1,7 +1,14 @@
-import { Link, useParams } from 'react-router-dom'
+import {
+  Link,
+  useNavigate,
+  useParams,
+} from 'react-router-dom'
 
 import { getPresets } from '../services/presetService'
-import { getAmpById } from '../services/ampService'
+import {
+  deleteAmp,
+  getAmpById,
+} from '../services/ampService'
 
 import { useEffect, useState } from 'react'
 
@@ -10,6 +17,7 @@ import type { Amp } from '../types/amp'
 
 export function AmpDetailsPage() {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const [amp, setAmp] =
     useState<Amp | null>(null)
@@ -46,6 +54,27 @@ export function AmpDetailsPage() {
     )
   }
 
+  const currentAmp = amp
+
+  async function handleDeleteAmp() {
+    const hasRelatedPresets =
+      relatedPresets.length > 0
+
+    const confirmed = confirm(
+      hasRelatedPresets
+        ? `Este amp está sendo usado por ${relatedPresets.length} preset${relatedPresets.length > 1 ? 's' : ''}. Deseja realmente deletá-lo?`
+        : 'Deseja realmente deletar este amp?'
+    )
+
+    if (!confirmed) {
+      return
+    }
+
+    await deleteAmp(currentAmp.id)
+
+    navigate('/amps')
+  }
+
   return (
     <div className="min-h-screen bg-zinc-900 text-white">
       <div className="p-4">
@@ -69,42 +98,61 @@ export function AmpDetailsPage() {
       </div>
 
       <img
-        src={amp.image}
-        alt={amp.name}
+        src={currentAmp.image}
+        alt={currentAmp.name}
         className="h-40 w-full object-cover"
       />
 
       <div className="p-6">
         <h1 className="text-4xl font-bold">
-          {amp.name}
+          {currentAmp.name}
         </h1>
 
         <p className="mt-2 text-zinc-400">
-          {amp.brand}
+          {currentAmp.brand}
         </p>
 
         <p className="mt-6 text-zinc-300">
-          {amp.description}
+          {currentAmp.description}
         </p>
 
         <div className="mt-8">
-          <Link
-            to={`/amp/${amp.id}/edit`}
-            className="
-              inline-flex
-              items-center
-              rounded-xl
-              bg-white
-              px-5
-              py-3
-              font-medium
-              text-black
-              transition
-              hover:opacity-80
-            "
-          >
-            Editar Amp
-          </Link>
+          <div className="flex flex-wrap gap-4">
+            <Link
+              to={`/amp/${currentAmp.id}/edit`}
+              className="
+                inline-flex
+                items-center
+                rounded-xl
+                bg-white
+                px-5
+                py-3
+                font-medium
+                text-black
+                transition
+                hover:opacity-80
+              "
+            >
+              Editar Amp
+            </Link>
+
+            <button
+              onClick={handleDeleteAmp}
+              className="
+                rounded-xl
+                border
+                border-red-500
+                px-5
+                py-3
+                font-medium
+                text-red-400
+                transition
+                hover:bg-red-500/10
+              "
+            >
+              Deletar Amp
+            </button>
+          </div>
         </div>
 
         <div className="mt-10">
