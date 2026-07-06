@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import { AmpCard } from '../components/AmpCard'
 
@@ -37,13 +38,40 @@ export function AmpsPage() {
           backdrop-blur-xl
         "
       >
-        <h1 className="text-3xl font-bold text-white">
-          Biblioteca de Amps
-        </h1>
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-3xl font-bold text-white">
+              Biblioteca de Amps
+            </h1>
 
-        <p className="mt-2 text-zinc-400">
-          Explore amplificadores usados nos presets
-        </p>
+            <p className="mt-2 text-zinc-400">
+              Explore amplificadores usados nos presets
+            </p>
+          </div>
+
+          <Link
+            to="/new-amp"
+            className="
+              flex
+              h-10
+              w-10
+              shrink-0
+              items-center
+              justify-center
+              rounded-full
+              bg-white
+              text-4xl
+              font-light
+              text-black
+              shadow-lg
+              transition-all
+              duration-200
+              hover:scale-105
+            "
+          >
+            +
+          </Link>
+        </div>
       </div>
       
       <div className="

@@ -6,6 +6,8 @@ import { NewPresetPage } from './pages/NewPresetPage'
 import { EditPresetPage } from './pages/EditPresetPage'
 import { AmpsPage } from './pages/AmpsPage'
 import { AmpDetailsPage } from './pages/AmpDetailsPage'
+import { NewAmpPage } from './pages/NewAmpPage'
+import { EditAmpPage } from './pages/EditAmpPage'
 import { SetlistsPage } from './pages/SetlistsPage'
 import { NewSetlistPage } from './pages/NewSetlistPage'
 import { BottomNavigation } from './components/BottomNavigation'
@@ -37,10 +39,20 @@ function App() {
           path="/amps"
           element={<AmpsPage />}
         />
+
+        <Route
+          path="/new-amp"
+          element={<NewAmpPage />}
+        />
         
         <Route
           path="/amp/:id"
           element={<AmpDetailsPage />}
+        />
+
+        <Route
+          path="/amp/:id/edit"
+          element={<EditAmpPage />}
         />
         <Route
           path="/setlists"

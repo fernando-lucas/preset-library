@@ -23,5 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# Temporario
-#src/assets/amps/*
+src/assets/amps/
+!src/assets/amps/*.webp
+
+temp/
