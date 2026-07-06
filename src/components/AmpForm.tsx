@@ -107,7 +107,7 @@ export function AmpForm({
 
       <div>
         <label className="mb-3 block text-sm text-zinc-400">
-          Imagem
+          Imagem para representar o Amp
         </label>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">

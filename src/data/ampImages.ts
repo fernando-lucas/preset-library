@@ -1,12 +1,12 @@
 
 import genericAmpImg from '../assets/amps/generic-amp.webp'
-import deluxeReverb65Img from '../assets/amps/fender-65-deluxe-reverb.png'
-import jcm800Img from '../assets/amps/marshall-jcm-800.png'
-import voxAc30Img from '../assets/amps/vox-ac30.png'
-import voxAc30Img2 from '../assets/amps/vox-ac30-2.png'
-import twoRockStudioSignatureImg from '../assets/amps/two-rock-studio-signature.png'
-import twoRockStudioSignatureImg2 from '../assets/amps/two-rock-studio-signature-2.png'
-import evh5150Img from '../assets/amps/evh-5150-iii.png'
+import deluxeReverb65Img from '../assets/amps/fender-65-deluxe-reverb.webp'
+import jcm800Img from '../assets/amps/marshall-jcm-800.webp'
+import voxAc30Img from '../assets/amps/vox-ac30.webp'
+import voxAc30Img2 from '../assets/amps/vox-ac30-2.webp'
+import twoRockStudioSignatureImg from '../assets/amps/two-rock-studio-signature.webp'
+import twoRockStudioSignatureImg2 from '../assets/amps/two-rock-studio-signature-2.webp'
+import evh5150Img from '../assets/amps/evh-5150-iii.webp'
 
 
 export const ampImages = [
